@@ -20,8 +20,10 @@ typedef struct k_thread{
 uint32_t* allocateStack();
 extern void osKernelInitialize();
 extern void osKernelStart();
-extern bool osCreateThread(void *ptr);
+extern bool osCreateThread(void* fnc_ptr);
 extern void runFirstThread(void);
+extern void osSched();
+extern void osYield(void);
 void SVC_Handler_Main( unsigned int *svc_args );
 
 #endif /* INC_KERNEL_H_ */

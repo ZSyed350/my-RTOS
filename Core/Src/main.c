@@ -56,8 +56,8 @@ static void MX_USART2_UART_Init(void);
 
 int __io_putchar(int ch)
 {
-HAL_UART_Transmit(&huart2,(uint8_t*)&ch,1,HAL_MAX_DELAY);
-return ch;
+	HAL_UART_Transmit(&huart2,(uint8_t*)&ch,1,HAL_MAX_DELAY);
+	return ch;
 }
 
 void print_continuously() {
@@ -66,19 +66,30 @@ void print_continuously() {
 	}
 }
 
+void print1()
+{
+	while(1)
+	{
+		for(int i = 0; i < 20002; i++){}
+		printf("Thread happy\r\n");
+		osYield();
+	}
+}
+void print2()
+{
+	while(1)
+	{
+		for(int i = 0; i < 30002; i++){}
+		printf("Thread arni\r\n");
+		osYield();
+	}
+}
+
 void jumpAssembly(void* fcn)
 {
 __asm("MOV PC, R0");
 }
 
-void print_happy_birthday(void)
-{
-__asm("SVC #16");
-}
-void print_stay_safe(void)
-{
-__asm("SVC #15");
-}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -105,7 +116,8 @@ int main(void)
   MX_USART2_UART_Init();
 
   osKernelInitialize();
-  osCreateThread((uint32_t*)print_continuously);
+  osCreateThread((void*)print1);
+  osCreateThread((void*)print2);
   osKernelStart();
 
   while (1)
