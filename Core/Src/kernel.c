@@ -32,10 +32,11 @@ void system_call4()
 
 void osKernelInitialize() {
 	MSP_INIT_VAL = *(uint32_t**)0x0;
+	current_stack = MSP_INIT_VAL;
 	//set the priority of PendSV to almost the weakest
 	SHPR3 |= 0xFE << 16; //shift the constant 0xFE 16 bits to set PendSV priority
 	SHPR2 |= 0xFDU << 24; //Set the priority of SVC higher than PendSV
-	current_stack = MSP_INIT_VAL - 0x400;
+
 }
 
 void osKernelStart() {
@@ -58,13 +59,13 @@ bool osCreateThread(void* fnc_ptr) {
 	mythread.sp = new_sp;
 	mythread.thread_function = fnc_ptr;
 	threads[nThreads] = mythread;
+	nThreads++;
 	return true;
 }
 
 uint32_t* allocateStack() {
-	nThreads++;
-	if (current_stack > MSP_INIT_VAL - (0x4000 - nThreads*STACK_SIZE)) {
-		current_stack = current_stack - nThreads*STACK_SIZE;
+	if (current_stack > MSP_INIT_VAL - (0x4000 - STACK_SIZE)) {
+		current_stack = current_stack - STACK_SIZE;
 	}
 	else {
 		current_stack = NULL;
@@ -83,9 +84,9 @@ void SVC_Handler_Main( unsigned int *svc_args )
 		runFirstThread();
 		break;
 	case YIELD:
-		//Pend an interrupt to do the context switch
-		_ICSR |= 1<<28;
-		__asm("isb");
+			//Pend an interrupt to do the context switch
+			_ICSR |= 1<<28;
+			__asm("isb");
 		break;
 	default: /* unknown SVC */
 		break;

@@ -70,8 +70,7 @@ void print1()
 {
 	while(1)
 	{
-		for(int i = 0; i < 20002; i++){}
-		printf("Thread happy\r\n");
+		printf("Thread 1\r\n");
 		osYield();
 	}
 }
@@ -79,8 +78,7 @@ void print2()
 {
 	while(1)
 	{
-		for(int i = 0; i < 30002; i++){}
-		printf("Thread arni\r\n");
+		printf("Thread 2\r\n");
 		osYield();
 	}
 }
