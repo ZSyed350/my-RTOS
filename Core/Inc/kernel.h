@@ -20,7 +20,7 @@ typedef struct k_thread{
 uint32_t* allocateStack();
 extern void osKernelInitialize();
 extern void osKernelStart();
-extern bool osCreateThread(void* fnc_ptr);
+extern bool osCreateThread(void* args, void* fnc_ptr);
 extern void runFirstThread(void);
 extern void osSched();
 extern void osYield(void);

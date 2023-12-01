@@ -43,7 +43,7 @@ void osKernelStart() {
 	system_call3();
 }
 
-bool osCreateThread(void* fnc_ptr) {
+bool osCreateThread(void* args, void* fnc_ptr) {
 	uint32_t* new_sp = allocateStack();
 	if (new_sp == NULL) {
 		return false;
@@ -51,9 +51,14 @@ bool osCreateThread(void* fnc_ptr) {
 	else {
 		*(--new_sp) = 1<<24; //A magic number, this is xPSR
 		*(--new_sp) = (uint32_t)fnc_ptr; //the thread function
-		for (int i = 0; i < 14; i++)
+		for (int i = 0; i < 5; i++)  // R0 is the 5th register
 		{
 		  *(--new_sp) = 0xA;
+		}
+		*(--new_sp) = (uint32_t)args;
+		for (int i = 0; i < 8; i++)
+		{
+			*(--new_sp) = 0xA;
 		}
 	}
 	mythread.sp = new_sp;

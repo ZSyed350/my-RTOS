@@ -66,7 +66,7 @@ void print_continuously() {
 	}
 }
 
-void print1()
+void print1(void* args)
 {
 	while(1)
 	{
@@ -74,12 +74,23 @@ void print1()
 		osYield();
 	}
 }
-void print2()
+
+void print2(void* args)
 {
 	while(1)
 	{
 		printf("Thread 2\r\n");
 		osYield();
+	}
+}
+
+void thread_function(void* args)
+{
+	//cast the arguments
+	uint32_t input = *(uint32_t*)args;
+	while(1)
+	{
+		printf("%u\n", input);
 	}
 }
 
@@ -113,9 +124,12 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
 
+  uint32_t x = 0xBA5EBA11;
+
   osKernelInitialize();
-  osCreateThread((void*)print1);
-  osCreateThread((void*)print2);
+/*  osCreateThread(&x, (void*)thread_function);*/
+  osCreateThread(&x, (void*)print1);
+  osCreateThread(&x, (void*)print2);
   osKernelStart();
 
   while (1)
