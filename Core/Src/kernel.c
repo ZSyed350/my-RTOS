@@ -18,7 +18,7 @@ uint32_t* current_stack; //location of last stack
 uint32_t* stackptr;
 thread mythread;
 int nThreads = 0;
-volatile int curThreadIndx = 1;
+volatile int curThreadIndx = 0;
 volatile thread threads[15];
 uint32_t default_time = 5*CLOCK_RATE;
 volatile uint32_t thread_timer = 4200000;
