@@ -175,12 +175,13 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  if (thread_timer > 0)
+  if (threads[curThreadIndx].runtime > 0)
   {
-	  thread_timer--;
+	  threads[curThreadIndx].runtime--;
   }
-  if (thread_timer == 0)
+  if (threads[curThreadIndx].runtime == 0)
   {
+	  threads[curThreadIndx].runtime = threads[curThreadIndx].timeslice;
 	  osYield();
   }
 

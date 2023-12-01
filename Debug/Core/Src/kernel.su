@@ -7,4 +7,4 @@
 ../Core/Src/kernel.c:103:11:allocateStack	4	static
 ../Core/Src/kernel.c:113:6:SVC_Handler_Main	24	static,ignoring_inline_asm
 ../Core/Src/kernel.c:133:6:osSched	16	static,ignoring_inline_asm
-../Core/Src/kernel.c:142:6:osYield	8	static
+../Core/Src/kernel.c:141:6:osYield	8	static

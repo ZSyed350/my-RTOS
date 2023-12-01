@@ -7,4 +7,4 @@
 ../Core/Src/kernel.c:103:11:allocateStack	2
 ../Core/Src/kernel.c:113:6:SVC_Handler_Main	3
 ../Core/Src/kernel.c:133:6:osSched	1
-../Core/Src/kernel.c:142:6:osYield	1
+../Core/Src/kernel.c:141:6:osYield	1

@@ -19,7 +19,7 @@ uint32_t* stackptr;
 thread mythread;
 int nThreads = 0;
 volatile int curThreadIndx = 1;
-thread threads[15];
+volatile thread threads[15];
 uint32_t default_time = 5*CLOCK_RATE;
 volatile uint32_t thread_timer = 4200000;
 
@@ -135,7 +135,6 @@ void osSched()
 	threads[curThreadIndx].sp = (uint32_t*)(__get_PSP() - 8*4);
 	curThreadIndx = (curThreadIndx+1)%nThreads;
 	__set_PSP((uint32_t)threads[curThreadIndx].sp);
-	thread_timer = threads[curThreadIndx].runtime;
 	return;
 }
 
