@@ -20,6 +20,7 @@ thread threads[15];
 int nThreads = 0;
 int curThreadIndx = 1;
 volatile int timer = 84000000;
+uint32_t default_time = 5;
 
 /* -------------- System Calls -------------- */
 void system_call3()
@@ -64,6 +65,35 @@ bool osCreateThread(void* args, void* fnc_ptr) {
 	}
 	mythread.sp = new_sp;
 	mythread.thread_function = fnc_ptr;
+	mythread.timeslice = default_time;
+	mythread.runtime = default_time;
+	threads[nThreads] = mythread;
+	nThreads++;
+	return true;
+}
+
+bool osCreateThreadWithDeadline(void* args, void* fnc_ptr, uint32_t time) {
+	uint32_t* new_sp = allocateStack();
+	if (new_sp == NULL) {
+		return false;
+	}
+	else {
+		*(--new_sp) = 1<<24; //A magic number, this is xPSR
+		*(--new_sp) = (uint32_t)fnc_ptr; //the thread function
+		for (int i = 0; i < 5; i++)  // R0 is the 5th register
+		{
+		  *(--new_sp) = 0xA;
+		}
+		*(--new_sp) = (uint32_t)args;
+		for (int i = 0; i < 8; i++)
+		{
+			*(--new_sp) = 0xA;
+		}
+	}
+	mythread.sp = new_sp;
+	mythread.thread_function = fnc_ptr;
+	mythread.timeslice = time;
+	mythread.runtime = time;
 	threads[nThreads] = mythread;
 	nThreads++;
 	return true;

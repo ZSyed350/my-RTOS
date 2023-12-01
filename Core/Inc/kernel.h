@@ -15,6 +15,8 @@
 typedef struct k_thread{
 	uint32_t* sp; //stack pointer
 	void (*thread_function)(void*); //function pointer
+	uint32_t timeslice;
+	uint32_t runtime;
 }thread;
 
 uint32_t* allocateStack();
