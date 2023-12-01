@@ -28,6 +28,7 @@ uint32_t* allocateStack();
 extern void osKernelInitialize();
 extern void osKernelStart();
 extern bool osCreateThread(void* args, void* fnc_ptr);
+extern bool osCreateThreadWithDeadline(void* args, void* fnc_ptr, uint32_t time);
 extern void runFirstThread(void);
 extern void osSched();
 extern void osYield(void);

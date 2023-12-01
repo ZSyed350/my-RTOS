@@ -20,8 +20,7 @@ thread mythread;
 int nThreads = 0;
 volatile int curThreadIndx = 0;
 volatile thread threads[15];
-uint32_t default_time = 5*CLOCK_RATE;
-volatile uint32_t thread_timer = 4200000;
+uint32_t default_time = 42000000;
 
 /* -------------- System Calls -------------- */
 void system_call3()

@@ -51,6 +51,13 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 
+uint32_t the_big_boy = 0;
+
+typedef struct k_nums_to_add{
+	uint32_t a;
+	uint32_t b;
+}nums_to_add;
+
 int __io_putchar(int ch)
 {
 	HAL_UART_Transmit(&huart2,(uint8_t*)&ch,1,HAL_MAX_DELAY);
@@ -63,32 +70,35 @@ void print_continuously() {
 	}
 }
 
-void print1(void* args)
+void modify_big_boy(void* args)
 {
+	//cast the arguments
+	nums_to_add nums = *(nums_to_add*)args;
 	while(1)
 	{
-		printf("Thread 1\r\n");
+		the_big_boy = the_big_boy*nums.a + nums.b;
 		//osYield();
 	}
 }
 
-void print2(void* args)
+void print_num(void* args)
 {
+	//cast the arguments
+	uint32_t *ptr = *(uint32_t*)args;
+	uint32_t my_val = *ptr;
 	while(1)
 	{
-		printf("Thread 2\r\n");
-		//osYield();
+		printf("%u\r\n", my_val);
 	}
 }
 
-void thread_function(void* args)
+void thread_num(void* args)
 {
 	//cast the arguments
 	uint32_t input = *(uint32_t*)args;
 	while(1)
 	{
 		printf("%u\r\n", input);
-		//osYield();
 	}
 }
 
@@ -97,19 +107,6 @@ void jumpAssembly(void* fcn)
 __asm("MOV PC, R0");
 }
 
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
 
@@ -122,12 +119,22 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
 
-  uint32_t x = 0xBA5EBA11;
+  uint32_t deadline2 = 2;
+  uint32_t deadline5 = 5;
+  uint32_t deadline10 = 10;
+  uint32_t largedeadline = 2000000;
+
+
+  nums_to_add c_struct;
+  c_struct.a = 2;
+  c_struct.b = 3;
+
+  uint32_t* big_boy_ptr = &the_big_boy;
 
   osKernelInitialize();
-  osCreateThread(&x, (void*)print1);
-  osCreateThread(&x, (void*)print2);
-  osCreateThread(&x, (void*)thread_function);
+  osCreateThreadWithDeadline(&c_struct, (void*)modify_big_boy, deadline2);
+  osCreateThreadWithDeadline(&big_boy_ptr, (void*)print_num, deadline2);
+  //osCreateThreadWithDeadline(&x, (void*)thread_num, deadline2);
   osKernelStart();
 
   while (1)

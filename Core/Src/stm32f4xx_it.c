@@ -182,7 +182,8 @@ void SysTick_Handler(void)
   if (threads[curThreadIndx].runtime == 0)
   {
 	  threads[curThreadIndx].runtime = threads[curThreadIndx].timeslice;
-	  osYield();
+	  _ICSR |= 1<<28;
+	  __asm("isb");
   }
 
   /* USER CODE END SysTick_IRQn 1 */
