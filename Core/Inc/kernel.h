@@ -19,6 +19,11 @@ typedef struct k_thread{
 	uint32_t runtime;
 }thread;
 
+
+/* -------- GLOBALS FOR SysTick_Handler ------- */
+extern volatile int curThreadIndx;
+extern volatile uint32_t thread_timer;
+
 uint32_t* allocateStack();
 extern void osKernelInitialize();
 extern void osKernelStart();

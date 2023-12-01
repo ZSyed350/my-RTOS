@@ -19,6 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "kernel.h"
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -174,9 +175,13 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  if (timer > 0)
+  if (thread_timer > 0)
   {
-	  timer--;
+	  thread_timer--;
+  }
+  if (thread_timer == 0)
+  {
+	  osYield();
   }
 
   /* USER CODE END SysTick_IRQn 1 */

@@ -10,17 +10,18 @@
 #define RUN_FIRST_THREAD 3
 #define YIELD 4
 #define STACK_SIZE 0x400
+#define CLOCK_RATE 84000000
 
 /* --------------- GLOBAL VARIABLES -----------------*/
 uint32_t* MSP_INIT_VAL;
 uint32_t* current_stack; //location of last stack
 uint32_t* stackptr;
 thread mythread;
-thread threads[15];
 int nThreads = 0;
-int curThreadIndx = 1;
-volatile int timer = 84000000;
-uint32_t default_time = 5;
+volatile int curThreadIndx = 1;
+thread threads[15];
+uint32_t default_time = 5*CLOCK_RATE;
+volatile uint32_t thread_timer = 4200000;
 
 /* -------------- System Calls -------------- */
 void system_call3()
@@ -134,6 +135,7 @@ void osSched()
 	threads[curThreadIndx].sp = (uint32_t*)(__get_PSP() - 8*4);
 	curThreadIndx = (curThreadIndx+1)%nThreads;
 	__set_PSP((uint32_t)threads[curThreadIndx].sp);
+	thread_timer = threads[curThreadIndx].runtime;
 	return;
 }
 

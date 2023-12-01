@@ -51,7 +51,6 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-extern volatile int timer;
 
 /* USER CODE BEGIN EFP */
 

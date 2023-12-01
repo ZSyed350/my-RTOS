@@ -68,7 +68,7 @@ void print1(void* args)
 	while(1)
 	{
 		printf("Thread 1\r\n");
-		osYield();
+		//osYield();
 	}
 }
 
@@ -77,7 +77,7 @@ void print2(void* args)
 	while(1)
 	{
 		printf("Thread 2\r\n");
-		osYield();
+		//osYield();
 	}
 }
 
@@ -88,7 +88,7 @@ void thread_function(void* args)
 	while(1)
 	{
 		printf("%u\r\n", input);
-		osYield();
+		//osYield();
 	}
 }
 
