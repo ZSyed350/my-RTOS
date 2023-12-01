@@ -45,9 +45,6 @@ extern void runFirstThread(void);
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -90,7 +87,8 @@ void thread_function(void* args)
 	uint32_t input = *(uint32_t*)args;
 	while(1)
 	{
-		printf("%u\n", input);
+		printf("%u\r\n", input);
+		osYield();
 	}
 }
 
@@ -127,9 +125,9 @@ int main(void)
   uint32_t x = 0xBA5EBA11;
 
   osKernelInitialize();
-/*  osCreateThread(&x, (void*)thread_function);*/
   osCreateThread(&x, (void*)print1);
   osCreateThread(&x, (void*)print2);
+  osCreateThread(&x, (void*)thread_function);
   osKernelStart();
 
   while (1)

@@ -19,6 +19,7 @@ thread mythread;
 thread threads[15];
 int nThreads = 0;
 int curThreadIndx = 1;
+volatile int timer = 84000000;
 
 /* -------------- System Calls -------------- */
 void system_call3()
