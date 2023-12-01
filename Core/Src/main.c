@@ -77,7 +77,7 @@ void modify_big_boy(void* args)
 	while(1)
 	{
 		the_big_boy = the_big_boy*nums.a + nums.b;
-		//osYield();
+		osYield();
 	}
 }
 
